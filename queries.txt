@@ -1,0 +1,24 @@
+1.SELECT * FROM `student`
+
+2.SELECT r.PM_ID,m.M_FName,m.M_LName,r.PF_ID,f.F_FName,f.F_LName FROM parent r JOIN mother m ON (r.PM_ID=m.M_ID) JOIN father f ON (r.PF_ID=f.F_ID) WHERE r.PM_ID=r.PF_ID
+
+3.SELECT s.S_ID,s.F_Name,s.L_Name,g.G_ID,g.G_FName,g.G_relation FROM parent r JOIN student s ON (s.SGP_ID=r.P_ID) JOIN guardian g ON (r.PG_ID=g.G_ID) GROUP BY g.G_relation
+
+4.SELECT s.S_ID,s.F_Name,r.P_ID,m.M_FName,f.F_FName FROM parent r JOIN student s ON (s.SGP_ID=r.P_ID) JOIN mother m ON (m.M_ID=r.PM_ID) JOIN father f ON(f.F_ID=r.PF_ID)
+
+5.SELECT s.S_ID,s.F_Name,s.SGP_ID,p.P_ID FROM student s JOIN parent p ON(s.SGP_ID=p.P_ID) where(s.SGP_ID=2)
+
+6.SELECT * FROM `student` WHERE TimeSpan<"2020-01-01"
+
+CREATE PROCEDURE `tester`(IN `time` DATE) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER SELECT * from student where student.TimeSpan<time;
+CALL tester("2020-01-01")
+
+7.SELECT * FROM student s JOIN class c ON(s.S_ID=c.stu_id) WHERE TimeSpan="2020-01-01" or TimeSpan>"2020-01-01" GROUP by c.C_ID
+
+8.SELECT * FROM parent p JOIN student s ON (s.SGP_ID=p.P_ID) WHERE s.TimeSpan="2020-01-01" or TimeSpan>"2020-01-01"
+
+9.SELECT * FROM parent p JOIN student s ON (s.SGP_ID=p.P_ID) WHERE s.Age=3 or s.Age<3
+
+10.CREATE TRIGGER `history` AFTER UPDATE ON `student` FOR EACH ROW INSERT INTO classhistory VALUES (classhistory.h_id,classhistory.current_c,class_section.prev_c,classhistory.class_sec,classhistory.NOW(),classhistory.ch_id);
+
+CREATE TRIGGER `history` AFTER INSERT ON `student` FOR EACH ROW INSERT INTO classhistory VALUES (classhistory.ch_id, classhistory.current_c,classhistory.NOW())
